@@ -48,6 +48,7 @@
 //	are in machine.h.
 //----------------------------------------------------------------------
 
+
 // -------------------------------------------
 // Doi thanh dang switch 
 // Xu li cac truong hop runtime
@@ -65,24 +66,38 @@ ExceptionHandler(ExceptionType which)
 	// In ra thong bao loi cho nguoi dung
 	// ->Dung he thong
 	case PageFaultException:
+		DEBUG('a', "\nNo valid translation found");
+		printf("\nNo valid translation found");
 		interrupt->Halt();
 		break;
 	case ReadOnlyException:
+		DEBUG('a', "\nWrite attempted to page marked read-only");
+		printf("\nWrite attempted to page marked read-only");
 		interrupt->Halt();
 		break;
 	case BusErrorException:
+		DEBUG('a', "\nTranslation resulted in an invalid physical address");
+		printf("\nTranslation resulted in an invalid physical address");
 		interrupt->Halt();
 		break;
 	case AddressErrorException:
+		DEBUG('a', "\nUnaligned reference or one that was beyond the end of the  address space");
+		printf("\nUnaligned reference or one that was beyond the end of the  address space");
 		interrupt->Halt();
 		break;
 	case OverflowException:
+		DEBUG('a', "\nInteger overflow in add or sub.");
+		printf("\nInteger overflow in add or sub.");
 		interrupt->Halt();
 		break;
 	case IllegalInstrException:
+		DEBUG('a', "\nUnimplemented or reserved instr.");
+		printf("\nUnimplemented or reserved instr.");
 		interrupt->Halt();
 		break;
 	case NumExceptionTypes:
+		DEBUG('a', "\nNumber Exception Types");
+		printf("\nNumber Exception Types");
 		interrupt->Halt();
 		break;
 	case SyscallException:
@@ -104,7 +119,8 @@ ExceptionHandler(ExceptionType which)
 				machine->WriteRegister (2, result);
 				printf("\nSub is tested");
 			}
-			
+
+		// Tang program Counter de chuong trinh khong bi lap vo han	
 		machine->IncreaseProgramCounter();
 		break;
 
