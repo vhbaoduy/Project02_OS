@@ -66,18 +66,6 @@ matmult: matmult.o start.o
 	$(LD) $(LDFLAGS) start.o matmult.o -o matmult.coff
 	../bin/coff2noff matmult.coff matmult
 
-ReadInt.o: ReadInt.c
-	$(CC) $(CFLAGS) -c ReadInt.c
-ReadInt: ReadInt.o start.o
-	$(LD) $(LDFLAGS) start.o ReadInt.o -o ReadInt.coff
-	../bin/coff2noff ReadInt.coff ReadInt
-
-PrintInt.o: PrintInt.c
-	$(CC) $(CFLAGS) -c PrintInt.c
-PrintInt: PrintInt.o start.o
-	$(LD) $(LDFLAGS) start.o PrintInt.o -o PrintInt.coff
-	../bin/coff2noff PrintInt.coff PrintInt 
-
 
 subTest.o: subTest.c
 	$(CC) $(CFLAGS) -c subTest.c
