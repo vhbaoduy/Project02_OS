@@ -102,6 +102,7 @@ ExceptionHandler(ExceptionType which)
 		break;
 	case SyscallException:
 		switch(type)
+		{
 			case SC_Halt:
 			{
 				DEBUG('a', "\nShutdown, initiated by user program. ");
@@ -109,6 +110,7 @@ ExceptionHandler(ExceptionType which)
 				interrupt->Halt();
 				return;
 			}
+
 			case SC_ReadInt:
 			{
 				/*Read integer number 
@@ -164,9 +166,11 @@ ExceptionHandler(ExceptionType which)
 				op1 = machine->ReadRegister (4); 
 				op2 = machine->ReadRegister (5); 
 				result = op1 - op2; 
+				//printf("\nSub is tested");
 				machine->WriteRegister (2, result);
-				printf("\nSub is tested");
 			}
+			break;
+		}
 
 		// Tang program Counter de chuong trinh khong bi lap vo han	
 		machine->IncreaseProgramCounter();
