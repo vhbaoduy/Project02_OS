@@ -159,6 +159,59 @@ ExceptionHandler(ExceptionType which)
 				gSynchConsole->Write(s, sz);
 			}
 			break;
+			case SC_ReadChar:
+			{
+				int maxBytes=255;
+				char* buffer= new char[maxBytes];
+				int num_bytes=gSynchConsole->Read(buffer,maxBytes);
+				if(num_bytes > 1) 
+				{
+					DEBUG('a', "\nERROR: Invalid input!");
+					machine->WriteRegister(2, 0);
+				}
+				else if(num_bytes == 0) 
+				{
+					DEBUG('a', "\nERROR: Empty!");
+					machine->WriteRegister(2, 0);
+				}
+				else
+				{
+					machine->WriteRegister(2, char(buffer[0]));
+				}
+				delete buffer;
+			}
+			break;
+			case SC_PrintChar:
+			{
+				char ch = (char)machine->ReadRegister(4);
+				gSynchConsole->Write(&ch,1);
+			}
+			break;
+			case SC_ReadString:
+			{
+				char* buffer=new char[LIMIT];
+				int virtAddr=machine->ReadRegister(4);
+				int length=machine->ReadRegister(5);
+				int sz=gSynchConsole->Read(buffer,length);
+				machine->System2User(virtAddr,sz,buffer);
+				delete buffer;
+			}
+			break;
+			case SC_PrintString:
+			{
+				char* buffer=new char[LIMIT];
+				int virtAddr=machine->ReadRegister(4), length=0;
+				buffer = machine-> User2System(virtAddr, 255); 
+				while (buffer[length] != 0 && buffer[length] != '\n')
+				{
+					gSynchConsole->Write(buffer+length, 1);
+					length++;
+				}
+				buffer[length] = '\n';
+				gSynchConsole->Write(buffer+length,1); 
+				delete buffer;
+			}
+			break;
 			// test SC_Sub
 			case SC_Sub:
 			{
