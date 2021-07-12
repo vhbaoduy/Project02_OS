@@ -14,9 +14,6 @@
 #define SYSCALLS_H
 
 #include "copyright.h"
-#define MAX_INT_LENGTH 9
-#define LIMIT 255
-#define MASK_GET_NUM 0xF
 
 /* system call codes -- used by the stubs to tell the kernel which system call
  * is being asked for
@@ -34,10 +31,7 @@
 #define SC_Yield	10
 #define SC_ReadInt 	11
 #define SC_PrintInt 	12
-#define SC_ReadChar 	13
-#define SC_PrintChar 	14
-#define SC_ReadString	15
-#define SC_PrintString 	16
+
 #define SC_Sub 		43
 
 #ifndef IN_ASM
@@ -140,11 +134,6 @@ int ReadInt();
 /* Print integer to console */
 void PrintInt(int num);
 
-char ReadChar();
-void PrintChar(char ch);
-
-void ReadString(char buffer[], int length);
-void PrintString(char buffer[]);
 #endif /* IN_ASM */
 
 #endif /* SYSCALL_H */
