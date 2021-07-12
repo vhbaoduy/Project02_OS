@@ -26,6 +26,7 @@
 #include "syscall.h"
 #define MAX_INT_LENGTH 11
 #define MAX_BUFFER 255
+#define LIMIT 255
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
