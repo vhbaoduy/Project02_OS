@@ -14,7 +14,7 @@
 #define SYSCALLS_H
 
 #include "copyright.h"
-#define MAX_INT_LENGTH 9
+#define MAX_INT_LENGTH 11
 #define MASK_GET_NUM 0xF
 
 /* system call codes -- used by the stubs to tell the kernel which system call
@@ -31,10 +31,10 @@
 #define SC_Close	8
 #define SC_Fork		9
 #define SC_Yield	10
-#define SC_ReadInt 11
-#define SC_PrintInt 12
+#define SC_ReadInt 	11
+#define SC_PrintInt 	12
 
-#define SC_Sub 43
+#define SC_Sub 		43
 
 #ifndef IN_ASM
 

@@ -24,7 +24,8 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
-
+#define MAX_INT_LENGTH 11
+#define MAX_BUFFER 255
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -113,50 +114,140 @@ ExceptionHandler(ExceptionType which)
 
 			case SC_ReadInt:
 			{
-				/*Read integer number 
-					and return it*/
+
+				//Read integer number and return it
 				DEBUG('a', "Read integer number from console.\n");
 				int number = 0;
 				int nDigit = 0;
 				int i;
-				char* bufer = new char[MAX_INT_LENGTH];
-				nDigit = gSynchConsole->Read(bufer, MAX_INT_LENGTH);
-				i = bufer[0] == '-' ? 1:0 ;
-				for (; i < nDigit; ++i)
+				char* MAX_INT = new char[10];
+				MAX_INT = "2147483647";
+
+				char* MIN_INT = new char[11];
+				MIN_INT = "-2147483648";
+
+				char* buffer = new char[MAX_BUFFER];
+				nDigit = gSynchConsole->Read(buffer, MAX_BUFFER);
+				i = buffer[0] == '-' ? 1:0 ;
+				int firstNumIndex = i;
+                    		int lastNumIndex = i;     
+
+                    		// Kiem tra tinh hop le cua so nguyen buffer
+                    		for(; i < nDigit; i++)					
+                    		{
+                        		if(buffer[i] == '.') /// 125.0000000 van la so
+                        		{
+                            			int j = i + 1;
+                           			for(; j < nDigit; j++)
+                            			{
+							// So khong hop le
+                                			if(buffer[j] != '0') // Phan thap phan khac 0 la khong hop le
+                                			{
+                                    				printf("\nThe integer number is not valid\n");
+                                    				DEBUG('a', "\n The integer number is not valid");
+                                    				machine->WriteRegister(2, 0);
+                                   				machine->IncreaseProgramCounter();
+                                    				delete[] buffer;
+								interrupt->Halt();
+                                    				return;
+                                			}
+                            			}
+                        
+                            			lastNumIndex = i - 1;				
+                            			break;                           
+                        		}
+                        		else if(buffer[i] < '0' && buffer[i] > '9') // Khong phai la so
+                        		{
+                            			printf("\nThe integer number is not valid\n");
+                            			DEBUG('a', "\n The integer number is not valid");
+                            			machine->WriteRegister(2, 0);
+                            			machine->IncreaseProgramCounter();
+                                    		delete[] buffer;
+						interrupt->Halt();
+                                    		return;
+                        		}
+                        		lastNumIndex = i;    
+                    		}
+				// Kiem tra co nam trong khoang tu MIN_INT den MAX_INT
+				if ((buffer[0] == '-' && lastNumIndex > 10) || (buffer[0] != '-' && lastNumIndex > 9))
 				{
-					number = number*10 + (int) (bufer[i] & MASK_GET_NUM);
+					printf("\nThe integer number is not valid\n");
+                                    	DEBUG('a', "\n The integer number is not valid");
+                                    	machine->WriteRegister(2, 0);
+                                   	machine->IncreaseProgramCounter();
+                                    	delete[] buffer;
+					interrupt->Halt();
+                                    	return;
 				}
-				number = bufer[0] == '-' ? -1*number : number;
+                    		else if (buffer[0] == '-' && lastNumIndex == 10)
+				{	
+					for(i = 1; i<= lastNumIndex; i++)
+                    			{
+						if (buffer[i] > MIN_INT[i])
+						{
+							printf("\nThe integer number is not valid\n");
+                                    			DEBUG('a', "\n The integer number is not valid");
+                                    			machine->WriteRegister(2, 0);
+                                   			machine->IncreaseProgramCounter();
+                                    			delete[] buffer;
+							interrupt->Halt();
+                                    			return;
+						}
+                    			}
+				}
+				else if (buffer[0] != '-' && lastNumIndex == 9)
+				{
+					for(i = 0; i<= lastNumIndex; i++)
+                    			{
+                        			if (buffer[i] > MAX_INT[i])
+						{
+							printf("\nThe integer number is not valid\n");
+                                    			DEBUG('a', "\n The integer number is not valid");
+                                    			machine->WriteRegister(2, 0);
+                                   			machine->IncreaseProgramCounter();
+                                    			delete[] buffer;
+							interrupt->Halt();
+                                    			return;
+						}
+                    			}
+				}
+                    		// So nguyen hop le
+                    		for(i = firstNumIndex; i<= lastNumIndex; i++)
+                    		{
+                        		number = number * 10 + (int)(buffer[i] - '0'); 
+                    		}
+				number = buffer[0] == '-' ? -1*number : number;
 				machine->WriteRegister(2, number);
-				delete bufer;
+				delete[] buffer;
 			}
 			break;
+
 			case SC_PrintInt:
 			{
-				char s[MAX_INT_LENGTH], neg, tmp;
+				char s[9], neg, tmp;
 				neg = '-';
-				int i, n, mid, sz;
+				int i, n, mid, len;
 				i = n = 0;
 				DEBUG('a', "Read argument value at r4");
 				n = machine->ReadRegister(4);
 				if (n < 0)
 				{
-					gSynchConsole->Write(&neg,1);
+					gSynchConsole->Write("-",1);
 					n = -n;
 				}
 				do {
 					s[i++] = n%10 + '0';
 				}while (( n /= 10) > 0);
-				sz = i;
-				s[sz] = '\n';
+				len = i;
+				s[len] = '\n';
 				mid = i / 2;
-				while (i-->mid)
+				while (i-- > mid)
 				{
-					tmp = s[sz-i-1];
-					s[sz-i-1] = s[i];
+					tmp = s[len-i-1];
+					s[len-i-1] = s[i];
 					s[i] = tmp;
 				}
-				gSynchConsole->Write(s, sz);
+				gSynchConsole->Write(s, len);
 			}
 			break;
 			// test SC_Sub

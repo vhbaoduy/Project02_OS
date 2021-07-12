@@ -14,8 +14,6 @@
 #define SYSCALLS_H
 
 #include "copyright.h"
-#define MAX_INT_LENGTH 9
-#define MASK_GET_NUM 0xF
 
 /* system call codes -- used by the stubs to tell the kernel which system call
  * is being asked for
