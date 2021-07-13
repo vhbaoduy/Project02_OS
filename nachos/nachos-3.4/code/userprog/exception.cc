@@ -149,7 +149,6 @@ ExceptionHandler(ExceptionType which)
                                     				machine->WriteRegister(2, 0);
                                    				machine->IncreaseProgramCounter();
                                     				delete[] buffer;
-								interrupt->Halt();
                                     				return;
                                 			}
                             			}
@@ -157,14 +156,13 @@ ExceptionHandler(ExceptionType which)
                             			lastNumIndex = i - 1;				
                             			break;                           
                         		}
-                        		else if(buffer[i] < '0' && buffer[i] > '9') // Khong phai la so
+                        		else if(buffer[i] < '0' || buffer[i] > '9') // Khong phai la so
                         		{
                             			printf("\nThe integer number is not valid\n");
                             			DEBUG('a', "\n The integer number is not valid");
                             			machine->WriteRegister(2, 0);
                             			machine->IncreaseProgramCounter();
                                     		delete[] buffer;
-						interrupt->Halt();
                                     		return;
                         		}
                         		lastNumIndex = i;    
@@ -177,7 +175,6 @@ ExceptionHandler(ExceptionType which)
                                     	machine->WriteRegister(2, 0);
                                    	machine->IncreaseProgramCounter();
                                     	delete[] buffer;
-					interrupt->Halt();
                                     	return;
 				}
                     		else if (buffer[0] == '-' && lastNumIndex == 10)
@@ -191,7 +188,6 @@ ExceptionHandler(ExceptionType which)
                                     			machine->WriteRegister(2, 0);
                                    			machine->IncreaseProgramCounter();
                                     			delete[] buffer;
-							interrupt->Halt();
                                     			return;
 						}
                     			}
@@ -207,7 +203,6 @@ ExceptionHandler(ExceptionType which)
                                     			machine->WriteRegister(2, 0);
                                    			machine->IncreaseProgramCounter();
                                     			delete[] buffer;
-							interrupt->Halt();
                                     			return;
 						}
                     			}

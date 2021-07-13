@@ -14,8 +14,9 @@ int main()
 
 	int temp, i,j, n;
 	int a[100];
+	PrintString("Nhap so phan tu mang (nho hon 100): ");
 	n = ReadInt();
-
+	PrintString("Nhap mang: ");
 	for (i = 0; i < n; i++)
 		a[i] = ReadInt();
     	for (i = 0; i < n-1; i++) 
@@ -31,6 +32,9 @@ int main()
 
 
 	for (i = 0; i < n; i++)
+	{
 		PrintInt(a[i]);
+		PrintChar(' ');
+	}
 	return 0;
 }
