@@ -303,11 +303,11 @@ ExceptionHandler(ExceptionType which)
 			// test SC_Sub
 			case SC_Sub:
 			{
-				int op1,op2,result;
+				int op1,op2;
 				op1 = machine->ReadRegister (4); 
 				op2 = machine->ReadRegister (5); 
-				result = op1 - op2; 
-				//printf("\nSub is tested");
+				int result = op1 - op2; 
+				printf("\nSub is tested");
 				machine->WriteRegister (2, result);
 			}
 			break;
