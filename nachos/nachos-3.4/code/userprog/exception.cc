@@ -222,7 +222,8 @@ ExceptionHandler(ExceptionType which)
 			{
 				char s[11], neg, tmp;
 				neg = '-';
-				int i, n, mid, len;
+				int i, mid, len;
+				long long n;
 				i = n = 0;
 				DEBUG('a', "Read argument value at r4");
 				n = machine->ReadRegister(4);
