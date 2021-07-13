@@ -252,27 +252,29 @@ ExceptionHandler(ExceptionType which)
 				int maxBytes=255;
 				char* buffer= new char[maxBytes];
 				int num_bytes=gSynchConsole->Read(buffer,maxBytes);
-				if(num_bytes > 1) 
+				if(num_bytes > 1) //Nhap qua 1 ky tu
 				{
-					DEBUG('a', "\nERROR: Invalid input!");
+					DEBUG('a', "\nOnly 1 char can be entered\n");
+					printf("\nOnly 1 char can be entered");
 					machine->WriteRegister(2, 0);
 				}
-				else if(num_bytes == 0) 
+				else if(num_bytes == 0) //Input rong
 				{
-					DEBUG('a', "\nERROR: Empty!");
+					DEBUG('a', "\nInput is empty\n");
+					printf("\nInput is empty");
 					machine->WriteRegister(2, 0);
 				}
-				else
+				else //Input hop le
 				{
 					machine->WriteRegister(2, char(buffer[0]));
 				}
-				delete buffer;
+				delete[] buffer;
 			}
 			break;
 			case SC_PrintChar:
 			{
 				char ch = (char)machine->ReadRegister(4);
-				gSynchConsole->Write(&ch,1);
+				gSynchConsole->Write(&ch,1); //In ky tu ra man hinh
 			}
 			break;
 			case SC_ReadString:
@@ -282,7 +284,7 @@ ExceptionHandler(ExceptionType which)
 				int length=machine->ReadRegister(5);
 				int sz=gSynchConsole->Read(buffer,length);
 				machine->System2User(virtAddr,sz,buffer);
-				delete buffer;
+				delete[] buffer;
 			}
 			break;
 			case SC_PrintString:
@@ -296,8 +298,8 @@ ExceptionHandler(ExceptionType which)
 					length++;
 				}
 				buffer[length] = '\n';
-				gSynchConsole->Write(buffer+length,1); 
-				delete buffer;
+				gSynchConsole->Write(buffer+length,1); //In chuoi ra man hinh
+				delete[] buffer;
 			}
 			break;
 			// test SC_Sub
