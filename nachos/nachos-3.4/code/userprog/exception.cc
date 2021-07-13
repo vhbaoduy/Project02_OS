@@ -121,11 +121,11 @@ ExceptionHandler(ExceptionType which)
 				int number = 0;
 				int nDigit = 0;
 				int i;
-				char* MAX_INT = new char[10];
-				MAX_INT = "2147483647";
+				char MAX_INT[] = "2147483647";
+				//MAX_INT = "2147483647";
 
-				char* MIN_INT = new char[11];
-				MIN_INT = "-2147483648";
+				char MIN_INT[] = "-2147483648";
+				//MIN_INT = "-2147483648";
 
 				char* buffer = new char[MAX_BUFFER];
 				nDigit = gSynchConsole->Read(buffer, MAX_BUFFER);
@@ -220,7 +220,7 @@ ExceptionHandler(ExceptionType which)
 
 			case SC_PrintInt:
 			{
-				char s[9], neg, tmp;
+				char s[11], neg, tmp;
 				neg = '-';
 				int i, n, mid, len;
 				i = n = 0;
