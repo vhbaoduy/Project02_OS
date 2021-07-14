@@ -9,7 +9,7 @@ int main()
 	PrintString("Giao vien: Le Viet Long");
 	PrintString("Sinh vien: Vo Hoang Bao Duy - 19127027");
 	PrintString("           Tran Ngoc Lam - 19127040");
-	PrintString("           Le Minh Si - 19127067");
+	PrintString("           Le Minh Si - 19127064");
 	PrintString("Mo ta chuong trinh ascii va sort");
 	PrintString("  - Chuong trinh ascii: In ra man hinh bang ma ascii.");
 	PrintString("  - Chuong trinh sort:");

@@ -30,7 +30,7 @@ int main()
             		} 
         }
 
-
+	PrintString("Mang sau khi sap xep: ");
 	for (i = 0; i < n; i++)
 	{
 		PrintInt(a[i]);
