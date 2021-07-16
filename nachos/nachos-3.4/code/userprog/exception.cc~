@@ -26,7 +26,6 @@
 #include "syscall.h"
 #define MAX_INT_LENGTH 11
 #define MAX_BUFFER 255
-#define LIMIT 255
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -249,25 +248,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 			case SC_ReadChar:
 			{
-				int maxBytes=255;
-				char* buffer= new char[maxBytes];
-				int num_bytes=gSynchConsole->Read(buffer,maxBytes);
-				if(num_bytes > 1) //Nhap qua 1 ky tu
-				{
-					DEBUG('a', "\nOnly 1 char can be entered\n");
-					printf("\nOnly 1 char can be entered");
-					machine->WriteRegister(2, 0);
-				}
-				else if(num_bytes == 0) //Input rong
-				{
-					DEBUG('a', "\nInput is empty\n");
-					printf("\nInput is empty");
-					machine->WriteRegister(2, 0);
-				}
-				else //Input hop le
-				{
-					machine->WriteRegister(2, char(buffer[0]));
-				}
+				char* buffer= new char[MAX_BUFFER];
+				int num_bytes=gSynchConsole->Read(buffer,MAX_BUFFER);
+				machine->WriteRegister(2, char(buffer[0]));
 				delete[] buffer;
 			}
 			break;
@@ -279,7 +262,7 @@ ExceptionHandler(ExceptionType which)
 			break;
 			case SC_ReadString:
 			{
-				char* buffer=new char[LIMIT];
+				char* buffer=new char[MAX_BUFFER];
 				int virtAddr=machine->ReadRegister(4);
 				int length=machine->ReadRegister(5);
 				int sz=gSynchConsole->Read(buffer,length);
@@ -289,7 +272,7 @@ ExceptionHandler(ExceptionType which)
 			break;
 			case SC_PrintString:
 			{
-				char* buffer=new char[LIMIT];
+				char* buffer=new char[MAX_BUFFER];
 				int virtAddr=machine->ReadRegister(4), length=0;
 				buffer = machine-> User2System(virtAddr, 255); 
 				while (buffer[length] != 0 && buffer[length] != '\n')

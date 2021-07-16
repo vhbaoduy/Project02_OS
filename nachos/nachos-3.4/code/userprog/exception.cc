@@ -274,7 +274,7 @@ ExceptionHandler(ExceptionType which)
 			{
 				char* buffer=new char[MAX_BUFFER];
 				int virtAddr=machine->ReadRegister(4), length=0;
-				buffer = machine-> User2System(virtAddr, 255); 
+				buffer = machine-> User2System(virtAddr, MAX_BUFFER); 
 				while (buffer[length] != 0 && buffer[length] != '\n')
 				{
 					gSynchConsole->Write(buffer+length, 1);
